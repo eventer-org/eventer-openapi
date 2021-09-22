@@ -104,7 +104,7 @@ components:
           example: [meetup, movie]
         google_place_ids:
           description: 'A comma separated list of ids of google places to restrict search to events from these places only.
-            <br/>You can use the google maps api to search for google place ids: 
+            <br/>You can use the google maps api to search for google place ids:
             [google place id finder](https://developers.google.com/maps/documentation/javascript/examples/places-placeid-finder).'
           type: array
           items:
@@ -115,8 +115,8 @@ components:
             top (latitude), left (longitude), bottom (latitude) and right (longitude).'
           $ref: '#/components/schemas/GeoArea'
         geo_raster_points:
-          description: 'Restricts the event search to a geo areas specified by "raster points". 
-            A raster point is a latitude/longitude combination of double values rounded off to 1 decimal point 
+          description: 'Restricts the event search to a geo areas specified by "raster points".
+            A raster point is a latitude/longitude combination of double values rounded off to 1 decimal point
             (separated by a semicolon). For example the "raster point" `50.8;12.9` restricts events
             to locations within a latitude starting with `50.8` and longitude starting with `12.9`.'
           type: array
@@ -133,7 +133,7 @@ components:
             type: string
           example: ["meetup/groups/29602718", "meetup/groups/29002800"]
         updated_since:
-          description: 'If set, only events will be returned which has been added or 
+          description: 'If set, only events will be returned which has been added or
             modified since the given timestamp. Can be used for synchronization or fetch scenarios.'
           type: string
           format: date-time
@@ -141,22 +141,22 @@ components:
           description: 'Adds some additional content to the response (e.g. `places` to include all related places).'
           $ref: '#/components/schemas/DiscoverRequestIncludeType'
         limit:
-          description: 'Sets the limit how much events should be returned by the response. 
+          description: 'Sets the limit how much events should be returned by the response.
             Limit must be greater than 0 and lower than 101. If not set the default limit will be 10.'
           type: integer
           format: int32
           example: 10
         cursor:
-          description: 'Continues a search by an `offset` specified by this cursor. 
-            Any event search could return a cursor which represents an offset to paginate to the next events. 
+          description: 'Continues a search by an `offset` specified by this cursor.
+            Any event search could return a cursor which represents an offset to paginate to the next events.
             To use a cursor you have to re-run the request with same parameters again but with the given cursor
             value to retrieve the next events of your search behind the limit.'
-          type: starting
+          type: string
     DiscoverRequestIncludeType:
       type: object
       properties:
         deleted:
-          description: 'If set to `true`the response will also include events which have been deleted 
+          description: 'If set to `true`the response will also include events which have been deleted
             (since the last update timestamp). This option can be used for synchronization to get information about deleted events.'
           type: boolean
         places:
@@ -178,7 +178,7 @@ components:
             $ref: '../places/components.yaml#/components/schemas/Place'
         primary_google_place_ids:
           description: 'A google place may have multiple place ids, but only one primary. If `google_place_ids` are given by the request,
-            which were not the primary ones, this dictionary holds the related primary google ids (only if they are different). 
+            which were not the primary ones, this dictionary holds the related primary google ids (only if they are different).
             All places will be returned and linked with their primary google place id.'
           type: object
           additionalProperties:
@@ -195,4 +195,3 @@ components:
             Can be used to get only event updates on using `updated_since` with this timestamp.'
           type: string
           format: date-time
-        

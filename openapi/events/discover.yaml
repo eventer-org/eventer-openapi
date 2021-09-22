@@ -44,7 +44,7 @@ get:
   - name: google_place_ids
     in: query
     description: 'A comma separated list of ids of google places to restrict search to events from these places only.
-      <br/>You can use the google maps api to search for google place ids: 
+      <br/>You can use the google maps api to search for google place ids:
       [google place id finder](https://developers.google.com/maps/documentation/javascript/examples/places-placeid-finder).'
     schema:
       type: array
@@ -54,18 +54,19 @@ get:
     required: false
   - name: geo_area
     in: query
-    description: 'Restricts the event search to a geo area bounding box specified by 4 comma separated coordinates: 
+    description: 'Restricts the event search to a geo area bounding box specified by 4 comma separated coordinates:
       top (latitude), left (longitude), bottom (latitude) and right (longitude), in this order.'
     schema:
       type: array
       items:
-        type: double
+        type: number
+        format: double
     required: false
     example: 50.838948,12.912577,50.827132,12.933774
   - name: geo_raster_points
     in: query
-    description: 'Restricts the event search to a geo areas specified by "raster points". 
-      A raster point is a latitude/longitude combination of double values rounded off to 1 decimal point 
+    description: 'Restricts the event search to a geo areas specified by "raster points".
+      A raster point is a latitude/longitude combination of double values rounded off to 1 decimal point
       (separated by a semicolon). For example the "raster point" `50.8;12.9` restricts events
       to locations within a latitude starting with `50.8` and longitude starting with `12.9`.'
     schema:
@@ -83,7 +84,7 @@ get:
     example: meetup/groups/29602718
   - name: updated_since
     in: query
-    description: 'If set, only events will be returned which has been added or 
+    description: 'If set, only events will be returned which has been added or
       modified since the given timestamp. Can be used for synchronization or fetch scenarios.'
     schema:
       type: string
@@ -91,7 +92,7 @@ get:
     required: false
   - name: include_deleted
     in: query
-    description: 'If set to `true`the response will also include events which have been deleted 
+    description: 'If set to `true`the response will also include events which have been deleted
         (since the last update timestamp). This option can be used for synchronization to get information about deleted events.'
     schema:
       type: boolean
@@ -105,7 +106,7 @@ get:
     required: false
   - name: limit
     in: query
-    description: 'Sets the limit how much events should be returned by the response. 
+    description: 'Sets the limit how much events should be returned by the response.
       Limit must be greater than 0 and lower than 101. If not set the default limit will be 10.'
     schema:
       type: integer
@@ -114,8 +115,8 @@ get:
     example: 10
   - name: cursor
     in: query
-    description: 'Continues a search by an `offset` specified by this cursor. 
-      Any event search could return a cursor which represents an offset to paginate to the next events. 
+    description: 'Continues a search by an `offset` specified by this cursor.
+      Any event search could return a cursor which represents an offset to paginate to the next events.
       To use a cursor you have to re-run the request with same parameters again but with the given cursor
       value to retrieve the next events of your search behind the limit.'
     schema:
@@ -138,7 +139,7 @@ post:
   requestBody:
     description: Defines search parameters to find events.
     content:
-      application/json; charset="utf-8":
+      application/json:
         schema:
           $ref: './components.yaml#/components/schemas/DiscoverRequest'
   responses:
