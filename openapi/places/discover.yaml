@@ -8,7 +8,7 @@ get:
   - name: google_place_ids
     in: query
     description: 'A comma separated list of ids of google places.
-      <br/>You can use the google maps api to search for google place ids: 
+      <br/>You can use the google maps api to search for google place ids:
       [google place id finder](https://developers.google.com/maps/documentation/javascript/examples/places-placeid-finder).'
     schema:
       type: array
@@ -20,7 +20,7 @@ get:
     200:
       description: The found places.
       content:
-        application/json; charset="utf-8":
+        application/json:
           schema:
             $ref: './components.yaml#/components/schemas/DiscoverResponse'
 post:
@@ -30,13 +30,13 @@ post:
   summary: "/places"
   requestBody:
     content:
-      application/json; charset="utf-8":
+      application/json:
         schema:
           $ref: './components.yaml#/components/schemas/DiscoverRequest'
   responses:
     200:
       description: The found places.
       content:
-        application/json; charset="utf-8":
+        application/json:
           schema:
             $ref: './components.yaml#/components/schemas/DiscoverResponse'
