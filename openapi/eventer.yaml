@@ -18,9 +18,12 @@ info:
     ## Help us make it better
     Please tell us how we can make the API better. If you have a specific feature request or if you found a bug, please feel free to contact us.
   version: "1.0"
+  license:
+    name: MIT
+    url: https://opensource.org/licenses/MIT
 
 servers:
-- url: https://api.eventer.app/v1/
+- url: https://api.eventer.app/v1
   variables: {}
 
 paths:
