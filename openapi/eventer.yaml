@@ -32,8 +32,7 @@ info:
 
     ## Help us make it better
     Please tell us how we can make the API better. If you have a specific feature request or if you found a bug,
-    please feel free to contact us, or contribute directly to our git repository:
-    [eventer-openapi](https://github.com/eventer-org/eventer-openapi).
+    please feel free to contact us or contribute directly to our [git repository](https://github.com/eventer-org/eventer-openapi).
   version: "1.0"
   license:
     name: MIT
