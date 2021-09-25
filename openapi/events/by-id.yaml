@@ -15,11 +15,11 @@ get:
       example: 6171211574804480
     example: 6171211574804480
   responses:
-    200:
+    '200':
       description: The event.
       content:
         application/json:
           schema:
             $ref: './components.yaml#/components/schemas/Event'
-    404:
+    '404':
       description: Event not found.
