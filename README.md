@@ -2,7 +2,7 @@
 
 This is the official [OpenAPI](https://spec.openapis.org/oas/v3.0.2) specification for the eventer web API.
 
-You can find a nice looking web version [here](https://apidoc.eventer.app/).
+A good-looking web version can be found [here](https://apidoc.eventer.app/).
 
 
 ### Projects that use this web API

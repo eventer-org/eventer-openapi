@@ -76,8 +76,8 @@ get:
   - name: contexts
     in: query
     description: 'Events may assigned to different contexts to determine where they come from.
-      For example a facebook event has the following contexts: `facebook`, `facebook/pages/{pageId}` and `facebook/events/{eventId}`.
-      <br /><br />So you can search for all events related to a context (e.g. all events of a facebook page).'
+      For example a meetup event has the following contexts: `meetup`, `meetup/groups/{groupId}` and `meetup/events/{eventId}`.
+      <br /><br />So you can search for all events related to a context (e.g. all events of a meetup group).'
     schema:
       type: string
     required: false
@@ -92,7 +92,7 @@ get:
     required: false
   - name: include_deleted
     in: query
-    description: 'If set to `true`the response will also include events which have been deleted
+    description: 'If set to `true` the response will also include events which have been deleted
         (since the last update timestamp). This option can be used for synchronization to get information about deleted events.'
     schema:
       type: boolean
