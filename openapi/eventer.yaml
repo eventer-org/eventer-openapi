@@ -1,5 +1,5 @@
-# see: https://github.com/OAI/OpenAPI-Specification/blob/master/versions/3.0.2.md
-openapi: 3.0.2
+# see: https://github.com/OAI/OpenAPI-Specification/blob/master/versions/3.1.0.md
+openapi: 3.1.0
 
 info:
   title: eventer web api
@@ -35,9 +35,12 @@ info:
     please feel free to contact us, or contribute directly to our git repository:
     [eventer-openapi](https://github.com/eventer-org/eventer-openapi).
   version: "1.0"
+  license:
+    name: MIT
+    url: https://opensource.org/licenses/MIT
 
 servers:
-- url: https://api.eventer.app/v1/
+- url: https://api.eventer.app/v1
   variables: {}
 
 paths:

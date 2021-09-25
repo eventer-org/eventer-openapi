@@ -123,7 +123,7 @@ get:
       type: string
     required: false
   responses:
-    200:
+    '200':
       description: All events that match the specified search criterias.
       content:
         application/json:
@@ -143,7 +143,7 @@ post:
         schema:
           $ref: './components.yaml#/components/schemas/DiscoverRequest'
   responses:
-    200:
+    '200':
       description: All events that match the specified search criterias.
       content:
         application/json:
