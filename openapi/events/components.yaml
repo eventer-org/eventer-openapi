@@ -5,8 +5,8 @@ components:
       properties:
         id:
           description: 'The id of the event.'
-          type: integer
-          format: int64
+          type: string
+          example: "64da3c1b9a887409da2005e7"
           readOnly: true
         title:
           description: 'The short title of the event'

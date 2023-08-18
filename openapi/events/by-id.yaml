@@ -10,10 +10,9 @@ get:
     description: The id of the event to get.
     required: true
     schema:
-      type: integer
-      format: int64
-      example: 6171211574804480
-    example: 6171211574804480
+      type: string
+      example: "64da3c1b9a887409da2005e7"
+    example: "64da3c1b9a887409da2005e7"
   responses:
     '200':
       description: The event.
