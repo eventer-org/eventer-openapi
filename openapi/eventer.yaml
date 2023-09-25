@@ -1,10 +1,10 @@
-# see: https://github.com/OAI/OpenAPI-Specification/blob/master/versions/3.0.3.md
-openapi: 3.0.3
+# see: https://github.com/OAI/OpenAPI-Specification/blob/master/versions/3.1.0.md
+openapi: 3.1.0
 
 info:
-  title: eventer web api
+  title: eventer web API
   description: |-
-    This is the official documentation of the (public) eventer web api,
+    This is the official documentation of the (public) eventer web API,
     with which you can search and receive informations about events in Germany.
     <br /><br />
     <b>Note: Because this project is in beta stage the offered events are restricted to the Chemnitz area in Saxony / Germany.</b>
