@@ -20,6 +20,6 @@ get:
       content:
         application/json:
           schema:
-            $ref: 'components.yaml#/components/schemas/Place'
+            $ref: './components.yaml#/components/schemas/Place'
     '404':
       description: Place not found.

@@ -39,18 +39,18 @@ info:
     url: https://opensource.org/licenses/MIT
 
 servers:
-- url: 'https://api.eventer.app/v1'
-  variables: {}
 - url: http://localhost:8888/v1
+  variables: {}
+- url: 'https://api.eventer.app/v1'
   variables: {}
 
 paths:
   /events:
-    $ref: 'events/discover.yaml'
+    $ref: './events/discover.yaml'
   /events/{id}:
-    $ref: 'events/by-id.yaml'
+    $ref: './events/by-id.yaml'
 
   /places:
-    $ref: 'places/discover.yaml'
+    $ref: './places/discover.yaml'
   /places/{id}:
-    $ref: 'places/by-id.yaml'
+    $ref: './places/by-id.yaml'
