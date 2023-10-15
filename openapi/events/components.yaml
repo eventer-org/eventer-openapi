@@ -54,16 +54,11 @@ components:
     GeoArea:
       type: object
       required:
-        - bottom
         - top
         - right
+        - bottom
         - left
       properties:
-        bottom:
-          description: 'The bottom (latitude) of the geo bounding rectangle.'
-          type: number
-          format: double
-          example: 50.827132
         top:
           description: 'The top (latitude) of the geo bounding rectangle.'
           type: number
@@ -74,6 +69,11 @@ components:
           type: number
           format: double
           example: 12.933774
+        bottom:
+          description: 'The bottom (latitude) of the geo bounding rectangle.'
+          type: number
+          format: double
+          example: 50.827132
         left:
           description: 'The left (longitude) of the geo bounding rectangle.'
           type: number
