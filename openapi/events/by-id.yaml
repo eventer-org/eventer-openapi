@@ -2,7 +2,7 @@ get:
   tags:
   - /events
   operationId: get-event-by-id
-  summary: "/events/{id}"
+  summary: '/events/{id}'
   description: Retrieve an event by id.
   parameters:
   - name: id
@@ -11,14 +11,13 @@ get:
     required: true
     schema:
       type: string
-      example: "64da3c1b9a887409da2005e7"
-    example: "64da3c1b9a887409da2005e7"
+    example: '64da3c1b9a887409da2005e7'
   responses:
     '200':
       description: The event.
       content:
         application/json:
           schema:
-            $ref: './components.yaml#/components/schemas/Event'
+            $ref: 'components.yaml#/components/schemas/Event'
     '404':
       description: Event not found.
