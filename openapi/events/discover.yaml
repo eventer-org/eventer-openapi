@@ -56,7 +56,7 @@ get:
     schema:
       type: string
     required: false
-    example: '50.838948,12.912577,50.827132,12.933774'
+    example: '50.827132,12.912577,50.838948,12.933774'
   - name: geo_raster_points
     in: query
     description: 'Restricts the event search to a geo areas specified by "raster points".
