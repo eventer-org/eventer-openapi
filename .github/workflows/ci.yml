@@ -9,4 +9,4 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - name: Lint
-        run: npx @redocly/openapi-cli lint ./openapi/eventer.yaml
+        run: npx @redocly/openapi-cli lint ./openapi/openapi.yaml

@@ -41,6 +41,8 @@ info:
 servers:
 - url: 'https://api.eventer.app/v1'
   variables: {}
+- url: http://localhost:8888/v1
+  variables: {}
 
 paths:
   /events:
