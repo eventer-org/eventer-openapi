@@ -39,8 +39,6 @@ info:
     url: https://opensource.org/licenses/MIT
 
 servers:
-- url: http://localhost:8888/v1
-  variables: {}
 - url: 'https://api.eventer.app/v1'
   variables: {}
 
