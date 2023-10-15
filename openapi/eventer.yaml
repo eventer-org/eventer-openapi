@@ -33,22 +33,22 @@ info:
     ## Help us make it better
     Please tell us how we can make the API better. If you have a specific feature request or if you found a bug,
     please feel free to contact us or contribute directly to our [git repository](https://github.com/eventer-org/eventer-openapi).
-  version: "1.0"
+  version: '1.0'
   license:
     name: MIT
     url: https://opensource.org/licenses/MIT
 
 servers:
-- url: https://api.eventer.app/v1
+- url: 'https://api.eventer.app/v1'
   variables: {}
 
 paths:
   /events:
-    $ref: ./events/discover.yaml
+    $ref: 'events/discover.yaml'
   /events/{id}:
-    $ref: ./events/by-id.yaml
+    $ref: 'events/by-id.yaml'
 
   /places:
-    $ref: ./places/discover.yaml
+    $ref: 'places/discover.yaml'
   /places/{id}:
-    $ref: ./places/by-id.yaml
+    $ref: 'places/by-id.yaml'
