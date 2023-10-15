@@ -7,15 +7,13 @@ get:
   parameters:
   - name: google_place_ids
     in: query
-    description: 'A comma separated list of ids of google places.
+    description: 'A comma-separated list of ids of google places.
       <br/>You can use the google maps api to search for google place ids:
       [google place id finder](https://developers.google.com/maps/documentation/javascript/examples/places-placeid-finder).'
     schema:
-      type: array
-      items:
-        type: string
-    style: simple
+      type: string
     required: true
+    example: 'ChIJYzs3_URGp0cRspbeorh84LM,ChIJQXmv10JGp0cROM6S5hB1AG8'
   responses:
     '200':
       description: The found places.
