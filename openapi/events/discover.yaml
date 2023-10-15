@@ -100,7 +100,7 @@ get:
     required: false
   - name: limit
     in: query
-    description: 'Sets the limit how much events should be returned by the response.'
+    description: 'Sets the limit of events returned by the response.'
     schema:
       type: integer
       format: int32
@@ -111,10 +111,10 @@ get:
     example: 10
   - name: cursor
     in: query
-    description: 'Continues a search by an `offset` specified by this cursor.
-      Any event search could return a cursor which represents an offset to paginate to the next events.
-      To use a cursor you have to re-run the request with same parameters again but with the given cursor
-      value to retrieve the next events of your search behind the limit.'
+    description: 'Continues a search from an `offset` specified by this cursor.
+      Any event search may return a cursor that represents an offset to paginate to the next events.
+      To paginate to the next events, you need to re-run the query with the exactly same parameters, 
+      but with the specified cursor value.'
     schema:
       type: string
     required: false
