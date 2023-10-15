@@ -100,8 +100,7 @@ get:
     required: false
   - name: limit
     in: query
-    description: 'Sets the limit how much events should be returned by the response.
-      Limit must be greater than 0 and lower than 101. If not set the default limit will be 10.'
+    description: 'Sets the limit how much events should be returned by the response.'
     schema:
       type: integer
       format: int32
