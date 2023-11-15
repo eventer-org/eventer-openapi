@@ -19,16 +19,19 @@ components:
         description:
           description: 'A description of the event.'
           type: string
+          nullable: true
         categories:
           description: 'The categories to which the event belongs. Note: not all events are categorized, yet.'
           uniqueItems: true
           type: array
+          nullable: true
           items:
             type: string
           example: [meetup, movie]
         link:
           description: 'The link to the original website of this event.'
           type: string
+          nullable: true
           example: 'https://www.meetup.com/dresden-eating-drinking-talking-laughing-etc-meetup/events/261999037/'
         contexts:
           description: 'Events may assigned to different contexts to determine where they come from.
@@ -36,6 +39,7 @@ components:
             <br /><br />So you can search for all events related to a context (e.g. all events of a meetup group).'
           uniqueItems: true
           type: array
+          nullable: true
           items:
             type: string
           example: ["meetup/groups/29602718", "meetup/groups/29002800"]
@@ -50,6 +54,7 @@ components:
         deleted_at:
           description: 'The Timestamp when this event has been deleted. An (deleted) event will only be returned, if `include.deleted: true` is set.'
           type: string
+          nullable: true
           format: date-time
     GeoArea:
       type: object
