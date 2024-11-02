@@ -1,6 +1,5 @@
-# see: https://github.com/OAI/OpenAPI-Specification/blob/master/versions/3.0.4.md
-openapi: 3.0.4
-
+# see: https://github.com/OAI/OpenAPI-Specification/blob/master/versions/3.1.0.md
+openapi: 3.1.0
 info:
   title: eventer web API
   description: |-
