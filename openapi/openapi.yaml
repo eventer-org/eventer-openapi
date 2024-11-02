@@ -46,7 +46,7 @@ tags:
   - name: places
     description: Get details about the venues where the events take place.
   - name: pods
-    description: Retrieve data from concrete sources (pods) of the eventer platform.
+    description: Retrieve semantic data (JSON-LD) from concrete sources (pods) of the eventer platform.
 
 paths:
 
@@ -142,7 +142,7 @@ paths:
       tags:
         - pods
       summary: /pods/{pod}/events
-      description: Retrieve events from a specific account (pod).
+      description: Retrieve semantic events from a specific account (pod).
       parameters:
         - name: pod
           in: path
@@ -160,8 +160,15 @@ paths:
         - $ref: './common/components.yaml#/parameters/cursor'
       responses:
         '200':
-          description: A list of events of this account (pod).
+          description: |-
+            A list of events of this account (pod).
+            The response is in JSON-LD format, using [Hydra](https://www.hydra-cg.com/) as response 
+            structure to return a list of semantic events ([https://schema.org/Event](https://schema.org/Event)) with optional expansions.
+            All properties starting with `@` are reserved for the [JSON-LD context](https://en.wikipedia.org/wiki/JSON-LD).
           content:
+            application/application/ld+json:
+              schema:
+                $ref: './pods/events/components.yaml#/responses/events'
             application/json:
               schema:
                 $ref: './pods/events/components.yaml#/responses/events'

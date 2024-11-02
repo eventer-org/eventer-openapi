@@ -4,7 +4,7 @@ parameters:
   startDateMin:
     name: startDateMin
     in: query
-    description: The minimum starts-at timestamp for events. Corresponds to [https://schema.org/startDate].
+    description: The minimum starts-at timestamp for events. Corresponds to [https://schema.org/startDate](https://schema.org/startDate).
     schema:
       type: string
       format: date-time
@@ -13,7 +13,7 @@ parameters:
   startDateMax:
     name: startDateMax
     in: query
-    description: The maximum starts-at timestamp for events. Corresponds to [https://schema.org/startDate].
+    description: The maximum starts-at timestamp for events. Corresponds to [https://schema.org/startDate](https://schema.org/startDate).
     schema:
       type: string
       format: date-time
@@ -23,7 +23,7 @@ parameters:
     name: dateModifiedMin
     in: query
     description: |-
-      The minimum timestamp when the event was last modified. Corresponds to [https://schema.org/dateModified].
+      The minimum timestamp when the event was last modified. Corresponds to [https://schema.org/dateModified](https://schema.org/dateModified).
     schema:
       type: string
       format: date-time
@@ -33,7 +33,7 @@ parameters:
     name: dateModifiedMax
     in: query
     description: |-
-      The maximum timestamp when the event was last modified. Corresponds to [https://schema.org/dateModified].
+      The maximum timestamp when the event was last modified. Corresponds to [https://schema.org/dateModified](https://schema.org/dateModified).
     schema:
       type: string
       format: date-time
@@ -71,5 +71,32 @@ responses:
   events:
     type: object
     properties:
-      '@id':
-        description: The semantic URI of this event. You can use this URI directly, to get more information about this event.
+      member:
+        description: |-
+          The URIs of the found events sorted by the specified order. Use this URI to retrieve the event data from the `@graph` field.
+        type: array
+        properties:
+          "@id":
+             type: string
+             format: uri
+             example: "https://sempods.org/aaltra/events/3upatk0gta08onp61vjkpf7p27"
+      "@graph":
+        description: |-
+          All resources in a graph-like structure, including all found events (see `member`) and all specified expansions.
+          The key is the URI of the resource, the value is the (semantic) resource itself. All event resources are of type [https://schema.org/Event](https://schema.org/Event).
+        type: object
+        additionalProperties:
+          type: object
+          properties:
+            "@id":
+              type: string
+              format: uri
+            "@type":
+              type: string
+              format: uri
+      next:
+        description: |-
+          The URI to the next page of events. If there are no more events, this field will not be present.
+        type: string
+        format: uri
+        example: "https://api.eventer.app/v1/pods/aaltra/events?limit=2&expand=image,offers&cursor=abc123"
