@@ -1,0 +1,25 @@
+
+parameters:
+
+  limit:
+    name: limit
+    in: query
+    description: 'Sets the limit of entries returned by the response.'
+    schema:
+      type: integer
+      format: int32
+      minimum: 1
+      maximum: 100
+      default: 10
+    required: false
+    example: 10
+
+  cursor:
+    name: cursor
+    in: query
+    description: |-
+      Continues a result list from an `offset` specified by this cursor.
+      To go to the next page, call the endpoint again, with exactly the same parameters, but with the specified cursor value.
+    schema:
+      type: string
+    required: false

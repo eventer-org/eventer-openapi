@@ -40,12 +40,75 @@ servers:
 - url: 'https://api.eventer.app/v1'
   variables: {}
 
+tags:
+  - name: events
+    description: Operations related to events
+  - name: places
+    description: Operations related to places
+
 paths:
+
   /events:
-    $ref: './events/index.yaml'
+    get:
+      tags:
+        - events
+      summary: /events
+      description: |- 
+        Use this endpoint to search for events.
+        <br /><br />All returned events will be primarily sorted by `event.starts_at` timestamps.
+      parameters:
+        - $ref: './events/components.yaml#/parameters/search'
+        - $ref: './events/components.yaml#/parameters/starts_at_min'
+        - $ref: './events/components.yaml#/parameters/starts_at_max'
+        - $ref: './events/components.yaml#/parameters/categories'
+        - $ref: './events/components.yaml#/parameters/google_place_ids'
+        - $ref: './events/components.yaml#/parameters/geo_area'
+        - $ref: './events/components.yaml#/parameters/geo_raster_points'
+        - $ref: './events/components.yaml#/parameters/contexts'
+        - $ref: './events/components.yaml#/parameters/updated_since'
+        - $ref: './events/components.yaml#/parameters/include_deleted'
+        - $ref: './events/components.yaml#/parameters/include_places'
+        - $ref: './common/components.yaml#/parameters/limit'
+        - $ref: './common/components.yaml#/parameters/cursor'
+      responses:
+        '200':
+          $ref: './events/components.yaml#/responses/events'
+
   /events/{id}:
-    $ref: './events/_id.yaml'
+    get:
+      tags:
+        - events
+      summary: /events/{id}
+      description: Retrieve an event by id.
+      parameters:
+        - name: id
+          in: path
+          description: The id of the event to get.
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: The event.
+          content:
+            application/json:
+              schema:
+                $ref: './events/schemas.yaml#/Event'
+        '404':
+          description: Event not found.
+
   /places:
-    $ref: './places/index.yaml'
-  /places/{id}:
-    $ref: './places/_id.yaml'
+    get:
+      tags:
+        - places
+      summary: /places
+      description: Use this endpoint to search for places.
+      parameters:
+        - $ref: './places/components.yaml#/parameters/google_place_ids'
+      responses:
+        '200':
+          description: The found places.
+          content:
+            application/json:
+              schema:
+                $ref: './places/components.yaml#/responses/places'

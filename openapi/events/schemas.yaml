@@ -1,0 +1,86 @@
+
+Event:
+  type: object
+  properties:
+    id:
+      description: 'The id of the event.'
+      type: string
+      example: "64da3c1b9a887409da2005e7"
+      readOnly: true
+    title:
+      description: 'The short title of the event'
+      type: string
+      example: K-Pop-Party
+    starts_at:
+      description: 'The time when this event will start.'
+      type: string
+      format: date-time
+    description:
+      description: 'A description of the event.'
+      type: string
+      nullable: true
+    categories:
+      description: 'The categories to which the event belongs. Note: not all events are categorized, yet.'
+      uniqueItems: true
+      type: array
+      nullable: true
+      items:
+        type: string
+      example: [meetup, movie]
+    link:
+      description: 'The link to the original website of this event.'
+      type: string
+      nullable: true
+      example: 'https://www.meetup.com/dresden-eating-drinking-talking-laughing-etc-meetup/events/261999037/'
+    contexts:
+      description: 'Events may assigned to different contexts to determine where they come from.
+          For example a meetup event has the following contexts: `meetup`, `meetup/groups/{groupId}` and `meetup/events/{eventId}`.
+          <br /><br />So you can search for all events related to a context (e.g. all events of a meetup group).'
+      uniqueItems: true
+      type: array
+      nullable: true
+      items:
+        type: string
+      example: ["meetup/groups/29602718", "meetup/groups/29002800"]
+    google_place_id:
+      description: 'The id of the google place where this event will happen.'
+      type: string
+      example: ChIJJ2ItzFUsp0cRvKqs0jA4QyA
+    updated_at:
+      description: 'The Timestamp when this event has been updated the last time.'
+      type: string
+      format: date-time
+    deleted_at:
+      description: 'The Timestamp when this event has been deleted. An (deleted) event will only be returned, if `include.deleted: true` is set.'
+      type: string
+      nullable: true
+      format: date-time
+
+GeoArea:
+  type: object
+  required:
+    - top
+    - right
+    - bottom
+    - left
+  properties:
+    top:
+      description: 'The top (latitude) of the geo bounding rectangle.'
+      type: number
+      format: double
+      example: 50.838948
+    right:
+      description: 'The right (longitude) of the geo bounding rectangle.'
+      type: number
+      format: double
+      example: 12.933774
+    bottom:
+      description: 'The bottom (latitude) of the geo bounding rectangle.'
+      type: number
+      format: double
+      example: 50.827132
+    left:
+      description: 'The left (longitude) of the geo bounding rectangle.'
+      type: number
+      format: double
+      example: 12.912577

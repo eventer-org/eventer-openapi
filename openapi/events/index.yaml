@@ -7,14 +7,7 @@ get:
     <br /><br />All returned events will be primarily sorted by `event.starts_at` timestamps.
     This is a shortcut for `POST /events` request.
   parameters:
-  - name: search
-    in: query
-    description: Searches events by a free text search.
-    schema:
-      type: string
-      format: string
-    required: false
-    example: Party
+
   - name: starts_at_min
     in: query
     description: 'The minimum starts-at timestamp for events. If not given the default value will be `now`.'

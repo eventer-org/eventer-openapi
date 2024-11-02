@@ -1,0 +1,44 @@
+
+Location:
+  type: object
+  description: 'A location with latitude and longitude.'
+  properties:
+    lat:
+      description: 'The latitude.'
+      type: number
+      format: double
+      example: 50.8284307
+    lon:
+      description: 'The longitude.'
+      type: number
+      format: double
+      example: 12.9203243
+
+Place:
+  type: object
+  properties:
+    google_place_id:
+      description: The (google place) id of this place.
+      type: string
+    primary_google_place_id:
+      description: |-
+        Google places can have multiple place ids. 
+        If the Google Place ID of the request is not the same as the primary ID, this field specifies the primary Google Place ID.'
+      type: string
+      example: ChIJQXmv10JGp0cROM6S5hB1AG8
+    name:
+      description: The name of this place.
+      type: string
+      example: Weltecho
+    location:
+      $ref: '#/components/schemas/Location'
+    website_url:
+      description: 'The website of this place.'
+      type: string
+      nullable: true
+      example: 'https://www.weltecho.eu/'
+    google_maps_url:
+      description: 'The Google Maps URL for this location.'
+      type: string
+      nullable: true
+      example: 'https://maps.google.com/?cid=7998521653658308152'

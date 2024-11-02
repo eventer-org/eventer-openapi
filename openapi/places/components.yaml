@@ -1,68 +1,29 @@
-components:
-  schemas:
-    Location:
-      type: object
-      description: 'A location with latitude and longitude.'
-      properties:
-        lat:
-          description: 'The latitude.'
-          type: number
-          format: double
-          example: 50.8284307
-        lon:
-          description: 'The longitude.'
-          type: number
-          format: double
-          example: 12.9203243
-    Place:
-      type: object
-      properties:
-        google_place_id:
-          description: 'The (google place) id of this place.'
-          type: string
-        primary_google_place_id:
-          description: 'Google places can have multiple place ids. 
-            If the Google Place ID of the request is not the same as the primary ID, this field specifies the primary Google Place ID.'
-          type: string
-          example: ChIJQXmv10JGp0cROM6S5hB1AG8
-        name:
-          description: 'The name of this place.'
-          type: string
-          example: Weltecho
-        location:
-          $ref: '#/components/schemas/Location'
-        website_url:
-          description: 'The website of this place.'
-          type: string
-          nullable: true
-          example: 'https://www.weltecho.eu/'
-        google_maps_url:
-          description: 'The Google Maps URL for this location.'
-          type: string
-          nullable: true
-          example: 'https://maps.google.com/?cid=7998521653658308152'
-    DiscoverRequest:
-      type: object
-      properties:
-        google_place_ids:
-          description: 'A comma separated list of ids of google places.
-            <br/>You can use the google maps api to search for google place ids: 
-            [google place id finder](https://developers.google.com/maps/documentation/javascript/examples/places-placeid-finder).'
-          type: array
-          items:
-            type: string
-            example: ChIJQ7SzNXtGp0cRZwiPGboZQJo
-    DiscoverResponse:
-      type: object
-      properties:
-        places:
-          description: 'The found places as a dictionary with their `id` as key.'
-          type: object
-          additionalProperties:
-            $ref: '#/components/schemas/Place'
-        request:
-          $ref: '#/components/schemas/DiscoverRequest'
-        timestamp:
-          description: 'The timestamp, when this request has been executed.'
-          type: string
-          format: date-time
+
+parameters:
+
+  google_place_ids:
+    name: google_place_ids
+    in: query
+    description: |-
+      A comma-separated list of ids of google places.
+      <br/>You can use the google maps api to search for google place ids:
+      [google place id finder](https://developers.google.com/maps/documentation/javascript/examples/places-placeid-finder).
+    schema:
+      type: string
+    required: false
+    example: 'ChIJYzs3_URGp0cRspbeorh84LM,ChIJQXmv10JGp0cROM6S5hB1AG8'
+
+responses:
+
+  places:
+    type: object
+    properties:
+      places:
+        description: 'The found places as a dictionary with their `id` as key.'
+        type: object
+        additionalProperties:
+          $ref: './schemas.yaml#/Place'
+      timestamp:
+        description: 'The timestamp, when this request has been executed.'
+        type: string
+        format: date-time
