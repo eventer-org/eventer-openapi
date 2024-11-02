@@ -42,9 +42,11 @@ servers:
 
 tags:
   - name: events
-    description: Operations related to events
+    description: Retrieve events from all known and trusted sources of the eventer platform.
   - name: places
-    description: Operations related to places
+    description: Get details about the venues where the events take place.
+  - name: pods
+    description: Retrieve data from concrete sources (pods) of the eventer platform.
 
 paths:
 
@@ -54,8 +56,7 @@ paths:
         - events
       summary: /events
       description: |- 
-        Use this endpoint to search for events.
-        <br /><br />All returned events will be primarily sorted by `event.starts_at` timestamps.
+        Use this endpoint to search for events over all known and trusted sources.
       parameters:
         - $ref: './events/components.yaml#/parameters/search'
         - $ref: './events/components.yaml#/parameters/starts_at_min'
@@ -135,3 +136,32 @@ paths:
                 $ref: './places/schemas.yaml#/Place'
         '404':
           description: Place not found.
+
+  /pods/{pod}/events:
+    get:
+      tags:
+        - pods
+      summary: /pods/{pod}/events
+      description: Retrieve events from a specific account (pod).
+      parameters:
+        - name: pod
+          in: path
+          description: The name of the account (pod) to get events from.
+          required: true
+          schema:
+            type: string
+        - $ref: './pods/events/components.yaml#/parameters/startDateMin'
+        - $ref: './pods/events/components.yaml#/parameters/startDateMax'
+        - $ref: './pods/events/components.yaml#/parameters/dateModifiedMin'
+        - $ref: './pods/events/components.yaml#/parameters/dateModifiedMax'
+        - $ref: './pods/events/components.yaml#/parameters/sort'
+        - $ref: './pods/events/components.yaml#/parameters/expand'
+        - $ref: './common/components.yaml#/parameters/limit'
+        - $ref: './common/components.yaml#/parameters/cursor'
+      responses:
+        '200':
+          description: A list of events of this account (pod).
+          content:
+            application/json:
+              schema:
+                $ref: './pods/events/components.yaml#/responses/events'

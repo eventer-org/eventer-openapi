@@ -1,0 +1,75 @@
+
+parameters:
+
+  startDateMin:
+    name: startDateMin
+    in: query
+    description: The minimum starts-at timestamp for events. Corresponds to [https://schema.org/startDate].
+    schema:
+      type: string
+      format: date-time
+    required: false
+
+  startDateMax:
+    name: startDateMax
+    in: query
+    description: The maximum starts-at timestamp for events. Corresponds to [https://schema.org/startDate].
+    schema:
+      type: string
+      format: date-time
+    required: false
+
+  dateModifiedMin:
+    name: dateModifiedMin
+    in: query
+    description: |-
+      The minimum timestamp when the event was last modified. Corresponds to [https://schema.org/dateModified].
+    schema:
+      type: string
+      format: date-time
+    required: false
+
+  dateModifiedMax:
+    name: dateModifiedMax
+    in: query
+    description: |-
+      The maximum timestamp when the event was last modified. Corresponds to [https://schema.org/dateModified].
+    schema:
+      type: string
+      format: date-time
+    required: false
+
+  sort:
+    name: sort
+    in: query
+    description: |-
+      Specify the sort order of the events to be returned.
+    schema:
+      type: string
+      enum:
+        - startDate_asc
+        - startDate_desc
+        - dateModified_asc
+        - dateModified_desc
+      default: startDate_asc
+    required: false
+
+  expand:
+    name: expand
+    in: query
+    description: |-
+      A list of fields to be included in the response. The names of the fields are separated by commas.
+      Every [https://schema.org/Event](https://schema.org/Event) field can be expanded, the default vocab is [https://schema.org](https://schema.org).
+      All expanded fields will be added into "@graph" entries by it URI (if the property exists).
+    schema:
+      type: string
+      example: image,offers
+    required: false
+
+responses:
+
+  events:
+    type: object
+    properties:
+      '@id':
+        description: The semantic URI of this event. You can use this URI directly, to get more information about this event.
