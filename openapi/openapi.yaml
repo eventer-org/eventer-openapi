@@ -1,15 +1,14 @@
-# see: https://github.com/OAI/OpenAPI-Specification/blob/master/versions/3.1.0.md
-openapi: 3.1.0
+# see: https://github.com/OAI/OpenAPI-Specification/blob/master/versions/3.0.4.md
+openapi: 3.0.4
 
 info:
   title: eventer web API
   description: |-
     This is the official documentation of the (public) eventer web API,
-    with which you can search and receive informations about events in Germany.
+    with which you can search and receive information about events in Germany.
     <br /><br />
     <b>Note: Because this project is in beta stage the offered events are restricted to the Chemnitz area in Saxony / Germany.</b>
     <br /><br />
-    This API is used by [eventer.app](https://eventer.app), a mobile app to find local events.
 
     ## Making a request
     All URLs starts with `https://api.eventer.app/v1/`. The path is prefixed with the API version.
@@ -44,11 +43,10 @@ servers:
 
 paths:
   /events:
-    $ref: './events/discover.yaml'
+    $ref: './events/index.yaml'
   /events/{id}:
-    $ref: './events/by-id.yaml'
-
+    $ref: './events/_id.yaml'
   /places:
-    $ref: './places/discover.yaml'
+    $ref: './places/index.yaml'
   /places/{id}:
-    $ref: './places/by-id.yaml'
+    $ref: './places/_id.yaml'

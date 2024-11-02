@@ -1,7 +1,7 @@
 get:
   tags:
   - /events
-  operationId: discover-events-get
+  operationId: events-get
   summary: '/events'
   description: Use this endpoint to search for events.
     <br /><br />All returned events will be primarily sorted by `event.starts_at` timestamps.
@@ -17,8 +17,7 @@ get:
     example: Party
   - name: starts_at_min
     in: query
-    description: 'The minimum starts-at timestamp for events. If not given the
-      default value will be `now`.'
+    description: 'The minimum starts-at timestamp for events. If not given the default value will be `now`.'
     schema:
       type: string
       format: date-time
@@ -129,7 +128,7 @@ post:
   tags:
   - /events
   summary: '/events'
-  operationId: discover-events-post
+  operationId: events-post
   description: Use this endpoint to search for events.<br /><br />All returned
     events will be primarily sorted by `event.starts_at` timestamps.
   requestBody:

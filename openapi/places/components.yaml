@@ -2,6 +2,7 @@ components:
   schemas:
     Location:
       type: object
+      description: 'A location with latitude and longitude.'
       properties:
         lat:
           description: 'The latitude.'
@@ -29,13 +30,12 @@ components:
           type: string
           example: Weltecho
         location:
-          description: 'The location of this place.'
           $ref: '#/components/schemas/Location'
         website_url:
           description: 'The website of this place.'
           type: string
           nullable: true
-          example: 'http://www.weltecho.eu/'
+          example: 'https://www.weltecho.eu/'
         google_maps_url:
           description: 'The Google Maps URL for this location.'
           type: string
