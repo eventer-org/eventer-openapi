@@ -31,7 +31,7 @@ Place:
       type: string
       example: Weltecho
     location:
-      $ref: '#/components/schemas/Location'
+      $ref: '#/Location'
     website_url:
       description: 'The website of this place.'
       type: string
