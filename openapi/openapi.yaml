@@ -46,7 +46,7 @@ tags:
   - name: places
     description: Get details about the venues where the events take place.
   - name: pods
-    description: Retrieve semantic data (JSON-LD) from concrete sources (pods) of the eventer platform.
+    description: Retrieve semantic data (JSON-LD) from specific sources (semantic pods).
 
 paths:
 
