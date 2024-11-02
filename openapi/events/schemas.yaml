@@ -7,8 +7,16 @@ Event:
       type: string
       example: "64da3c1b9a887409da2005e7"
       readOnly: true
+    uri:
+      description: |-
+        The URI of the event. If given, this URI represents the origin Linked-Open-Data resource.
+        You can use this URI to get more information about the event, it represents a semantic endpoint.
+      type: string
+      readOnly: true
+      nullable: true
+      example: 'https://sempods.org/aaltra/events/3e1g5ldu9fug02hpmqfm7teo9f'
     title:
-      description: 'The short title of the event'
+      description: The title of the event.
       type: string
       example: K-Pop-Party
     starts_at:
@@ -16,7 +24,7 @@ Event:
       type: string
       format: date-time
     description:
-      description: 'A description of the event.'
+      description: 'A short, media neutral textual description of the event.'
       type: string
       nullable: true
     categories:
@@ -33,9 +41,10 @@ Event:
       nullable: true
       example: 'https://www.meetup.com/dresden-eating-drinking-talking-laughing-etc-meetup/events/261999037/'
     contexts:
-      description: 'Events may assigned to different contexts to determine where they come from.
-          For example a meetup event has the following contexts: `meetup`, `meetup/groups/{groupId}` and `meetup/events/{eventId}`.
-          <br /><br />So you can search for all events related to a context (e.g. all events of a meetup group).'
+      description: |-
+        Events may assigned to different contexts to determine where they come from.
+        For example a meetup event has the following contexts: `meetup`, `meetup/groups/{groupId}` and `meetup/events/{eventId}`.
+        <br /><br />So you can search for all events related to a context (e.g. all events of a meetup group).
       uniqueItems: true
       type: array
       nullable: true
