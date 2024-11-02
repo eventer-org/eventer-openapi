@@ -112,3 +112,26 @@ paths:
             application/json:
               schema:
                 $ref: './places/components.yaml#/responses/places'
+
+  /places/{id}:
+    get:
+      tags:
+        - places
+      summary: /places/{id}
+      description: Retrieve a place by its google place id.
+      parameters:
+        - name: id
+          in: path
+          description: The google place id of the place to get.
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: The place.
+          content:
+            application/json:
+              schema:
+                $ref: './places/schemas.yaml#/Place'
+        '404':
+          description: Place not found.
