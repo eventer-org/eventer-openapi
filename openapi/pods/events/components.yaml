@@ -84,6 +84,8 @@ responses:
         description: |-
           All resources in a graph-like structure, including all found events (see `member`) and all specified expansions.
           The key is the URI of the resource, the value is the (semantic) resource itself. All event resources are of type [https://schema.org/Event](https://schema.org/Event).
+          All properties (except `@id` and `@type`) are optionally returned as array, even if only one value can be present
+          (this is a consequence of the data being stored in semantic format, and there may be multiple values for a property).
         type: object
         additionalProperties:
           type: object
