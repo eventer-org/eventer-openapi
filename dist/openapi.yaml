@@ -1,0 +1,700 @@
+openapi: 3.2.0
+info:
+  title: eventer web API
+  description: |-
+    This is the official documentation of the (public) eventer web API,
+    with which you can search and receive information about events in Germany.
+    <br /><br />
+    <b>Note: Because this project is in beta stage the offered events are restricted to the Chemnitz area in Saxony / Germany.</b>
+    <br /><br />
+
+    ## API Lifecycle
+    The **Pods API** (`/pods/{pod}/events`) is the preferred API for accessing event data.
+    It returns semantic data (JSON-LD) directly from organizer pods and supports the full
+    schema.org/Event vocabulary with field expansion.
+    <br /><br />
+    The legacy **Events API** (`/events`) is deprecated and will be removed in a future version.
+    New integrations should use the Pods API instead.
+
+    ## Making a request
+    All URLs starts with `https://api.eventer.app/v1/`. The path is prefixed with the API version.
+    If we change the API in backward-incompatible ways, we'll bump the version marker and maintain stable support for the old URLs.
+    Here's a simple example to search for upcoming events from a specific pod:
+    [https://api.eventer.app/v1/pods/aaltra/events](https://api.eventer.app/v1/pods/aaltra/events)
+
+    ## Date formats
+    All timestamps (for requests and responses) are encoded in [ISO 8601](https://en.wikipedia.org/wiki/ISO_8601)
+    with the following format: `YYYY-MM-DD'T'HH:mm'Z'`. The timezone used in responses is `UTC`.
+
+    ## Pagination and Limits
+    Most collection APIs paginate their results. Normally you can specify a limit with the parameter `limit`
+    which must be greater than 0 and lower than 101 (default: 10). If there are more results to paginate for,
+    you will get a `cursor` in the response which can be used as parameter for the next request (e.g. `&cursor=foo`),
+    and so on until you get a response without cursor.
+
+    ## Authentication
+    This is an open API, no authentication needed.
+
+    ## Help us make it better
+    Please tell us how we can make the API better. If you have a specific feature request or if you found a bug,
+    please feel free to contact us or contribute directly to our [git repository](https://github.com/eventer-org/eventer-openapi).
+  version: '1.1'
+  license:
+    name: MIT
+    url: https://opensource.org/licenses/MIT
+servers:
+  - url: https://api.eventer.app/v1
+    variables: {}
+security: []
+tags:
+  - name: pods
+    description: |-
+      **Preferred API.** Retrieve semantic event data (JSON-LD) from organizer pods.
+      Returns schema.org/Event resources with optional field expansion.
+  - name: places
+    description: Get details about the venues where the events take place.
+  - name: events
+    description: |-
+      **Deprecated.** Legacy endpoint for searching events across all sources.
+      Use the Pods API (`/pods/{pod}/events`) for new integrations.
+paths:
+  /events:
+    get:
+      operationId: searchEvents
+      tags:
+        - events
+      summary: /events
+      deprecated: true
+      description: |-
+        **Deprecated — use `/pods/{pod}/events` instead.**
+
+        Search for events over all known and trusted sources.
+      parameters:
+        - $ref: '#/components/parameters/search'
+        - $ref: '#/components/parameters/starts_at_min'
+        - $ref: '#/components/parameters/starts_at_max'
+        - $ref: '#/components/parameters/categories'
+        - $ref: '#/components/parameters/google_place_ids'
+        - $ref: '#/components/parameters/geo_area'
+        - $ref: '#/components/parameters/geo_raster_points'
+        - $ref: '#/components/parameters/contexts'
+        - $ref: '#/components/parameters/updated_since'
+        - $ref: '#/components/parameters/include_deleted'
+        - $ref: '#/components/parameters/include_places'
+        - $ref: '#/components/parameters/limit'
+        - $ref: '#/components/parameters/cursor'
+      responses:
+        '200':
+          description: The found events.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/responses-events'
+  /events/{id}:
+    get:
+      operationId: getEvent
+      tags:
+        - events
+      summary: /events/{id}
+      deprecated: true
+      description: |-
+        **Deprecated — use the Pods API instead.**
+
+        Retrieve an event by id.
+      parameters:
+        - name: id
+          in: path
+          description: The id of the event to get.
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: The event.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Event'
+        '404':
+          description: Event not found.
+  /places:
+    get:
+      operationId: searchPlaces
+      tags:
+        - places
+      summary: /places
+      description: Use this endpoint to search for places.
+      parameters:
+        - $ref: '#/components/parameters/parameters-google_place_ids'
+      responses:
+        '200':
+          description: The found places.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/places'
+  /places/{id}:
+    get:
+      operationId: getPlace
+      tags:
+        - places
+      summary: /places/{id}
+      description: Retrieve a place by its google place id.
+      parameters:
+        - name: id
+          in: path
+          description: The google place id of the place to get.
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: The place.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Place'
+        '404':
+          description: Place not found.
+  /pods/{pod}/events:
+    get:
+      operationId: getPodEvents
+      tags:
+        - pods
+      summary: /pods/{pod}/events
+      description: Retrieve semantic events from a specific account (pod).
+      parameters:
+        - name: pod
+          in: path
+          description: The name of the account (pod) to get events from.
+          required: true
+          schema:
+            type: string
+        - $ref: '#/components/parameters/startDateMin'
+        - $ref: '#/components/parameters/startDateMax'
+        - $ref: '#/components/parameters/dateModifiedMin'
+        - $ref: '#/components/parameters/dateModifiedMax'
+        - $ref: '#/components/parameters/sort'
+        - $ref: '#/components/parameters/expand'
+        - $ref: '#/components/parameters/limit'
+        - $ref: '#/components/parameters/cursor'
+      responses:
+        '200':
+          description: |-
+            A list of events of this account (pod).
+            The response is in JSON-LD format, using [Hydra](https://www.hydra-cg.com/) as response 
+            structure to return a list of semantic events ([https://schema.org/Event](https://schema.org/Event)) with optional expansions.
+            All properties starting with `@` are reserved for the [JSON-LD context](https://en.wikipedia.org/wiki/JSON-LD).
+          content:
+            application/ld+json:
+              schema:
+                $ref: '#/components/schemas/components_responses-events'
+            application/json:
+              schema:
+                $ref: '#/components/schemas/components_responses-events'
+components:
+  parameters:
+    search:
+      name: search
+      in: query
+      description: Searches events by a free text search.
+      schema:
+        type: string
+        format: string
+      required: false
+      example: Party
+    starts_at_min:
+      name: starts_at_min
+      in: query
+      description: The minimum starts-at timestamp for events. If not given the default value will be `now`.
+      schema:
+        type: string
+        format: date-time
+      required: false
+    starts_at_max:
+      name: starts_at_max
+      in: query
+      description: The maximum starts-at timestamp for events.
+      schema:
+        type: string
+        format: date-time
+      required: false
+    categories:
+      name: categories
+      in: query
+      description: |-
+        A comma-separated list of event categories to search for (not all events are categorized yet). 
+        If not specified all events of all categories (or no category) will be returned.
+        <br/><br/>Currently the following categories are supported:
+        <br/>`exhibition`, `meetup`, `movie`'
+      schema:
+        type: string
+      required: false
+      example: meetup,movie
+    google_place_ids:
+      name: google_place_ids
+      in: query
+      description: |-
+        A comma-separated list of ids of google places to restrict search to events from these places only.
+        <br/>You can use the google maps api to search for google place ids:
+        [google place id finder](https://developers.google.com/maps/documentation/javascript/examples/places-placeid-finder).
+      schema:
+        type: string
+      required: false
+      example: ChIJYzs3_URGp0cRspbeorh84LM,ChIJQXmv10JGp0cROM6S5hB1AG8
+    geo_area:
+      name: geo_area
+      in: query
+      description: |-
+        Restricts the event search to a geo area bounding box specified by 4 comma separated coordinates:
+        top (latitude), left (longitude), bottom (latitude) and right (longitude), in this order.
+      schema:
+        type: string
+      required: false
+      example: 50.838948,12.912577,50.827132,12.933774
+    geo_raster_points:
+      name: geo_raster_points
+      in: query
+      description: |-
+        Restricts the event search to a geo areas specified by "raster points".
+        A raster point is a latitude/longitude combination of double values rounded off to 1 decimal point
+        (separated by a semicolon). For example the "raster point" `50.8;12.9` restricts events
+        to locations within a latitude starting with `50.8` and longitude starting with `12.9`.
+      schema:
+        type: string
+      required: false
+      example: 50.8;12.9,50.9;12.9
+    contexts:
+      name: contexts
+      in: query
+      description: |-
+        Events may assigned to different contexts to determine where they come from.
+        For example a meetup event has the following contexts: `meetup`, `meetup/groups/:groupId` and `meetup/events/:eventId`.
+        <br /><br />So you can search for all events related to a context (e.g. all events of a meetup group).
+      schema:
+        type: string
+      required: false
+      example: meetup/groups/29602718
+    updated_since:
+      name: updated_since
+      in: query
+      description: |-
+        If set, only events will be returned which has been added or modified since the given timestamp. 
+        Can be used for synchronization or fetch scenarios.
+      schema:
+        type: string
+        format: date-time
+      required: false
+    include_deleted:
+      name: include_deleted
+      in: query
+      description: |-
+        If set to `true` the response will also include events which have been deleted
+        (since the last update timestamp). This option can be used for synchronization to get information about deleted events.
+      schema:
+        type: boolean
+      required: false
+    include_places:
+      name: include_places
+      in: query
+      description: |-
+        If set to `true` the response will also include the field places which holds all places of the fetched events by their id. 
+        So you can use one request to fetch events with the places where they take part.
+      schema:
+        type: boolean
+      required: false
+    limit:
+      name: limit
+      in: query
+      description: Sets the limit of entries returned by the response.
+      schema:
+        type: integer
+        format: int32
+        minimum: 1
+        maximum: 100
+        default: 10
+      required: false
+      example: 10
+    cursor:
+      name: cursor
+      in: query
+      description: |-
+        Continues a result list from an `offset` specified by this cursor.
+        To go to the next page, call the endpoint again, with exactly the same parameters, but with the specified cursor value.
+      schema:
+        type: string
+      required: false
+    parameters-google_place_ids:
+      name: google_place_ids
+      in: query
+      description: |-
+        A comma-separated list of ids of google places.
+        <br/>You can use the google maps api to search for google place ids:
+        [google place id finder](https://developers.google.com/maps/documentation/javascript/examples/places-placeid-finder).
+      schema:
+        type: string
+      required: false
+      example: ChIJYzs3_URGp0cRspbeorh84LM,ChIJQXmv10JGp0cROM6S5hB1AG8
+    startDateMin:
+      name: startDateMin
+      in: query
+      description: The minimum starts-at timestamp for events. Corresponds to [https://schema.org/startDate](https://schema.org/startDate).
+      schema:
+        type: string
+        format: date-time
+      required: false
+    startDateMax:
+      name: startDateMax
+      in: query
+      description: The maximum starts-at timestamp for events. Corresponds to [https://schema.org/startDate](https://schema.org/startDate).
+      schema:
+        type: string
+        format: date-time
+      required: false
+    dateModifiedMin:
+      name: dateModifiedMin
+      in: query
+      description: The minimum timestamp when the event was last modified. Corresponds to [https://schema.org/dateModified](https://schema.org/dateModified).
+      schema:
+        type: string
+        format: date-time
+      required: false
+    dateModifiedMax:
+      name: dateModifiedMax
+      in: query
+      description: The maximum timestamp when the event was last modified. Corresponds to [https://schema.org/dateModified](https://schema.org/dateModified).
+      schema:
+        type: string
+        format: date-time
+      required: false
+    sort:
+      name: sort
+      in: query
+      description: Specify the sort order of the events to be returned.
+      schema:
+        type: string
+        enum:
+          - startDate_asc
+          - startDate_desc
+          - dateModified_asc
+          - dateModified_desc
+        default: startDate_asc
+      required: false
+    expand:
+      name: expand
+      in: query
+      description: |-
+        A list of fields to be included in the response. The names of the fields are separated by commas.
+        Every [https://schema.org/Event](https://schema.org/Event) field can be expanded, the default vocab is [https://schema.org](https://schema.org).
+        All expanded fields will be added into "@graph" entries by it URI (if the property exists).
+      schema:
+        type: string
+        example: image,offers
+      required: false
+  schemas:
+    Event:
+      type: object
+      properties:
+        id:
+          description: The id of the event.
+          type: string
+          example: 64da3c1b9a887409da2005e7
+          readOnly: true
+        uri:
+          description: |-
+            The URI of the event. If given, this URI represents the origin Linked-Open-Data resource.
+            You can use this URI to get more information about the event, it represents a semantic endpoint.
+          type:
+            - string
+            - 'null'
+          readOnly: true
+          example: https://sempods.org/aaltra/events/3e1g5ldu9fug02hpmqfm7teo9f
+        title:
+          description: The title of the event.
+          type: string
+          example: K-Pop-Party
+        starts_at:
+          description: The time when this event will start.
+          type: string
+          format: date-time
+        description:
+          description: A short, media neutral textual description of the event.
+          type:
+            - string
+            - 'null'
+        categories:
+          description: 'The categories to which the event belongs. Note: not all events are categorized, yet.'
+          uniqueItems: true
+          type:
+            - array
+            - 'null'
+          items:
+            type: string
+          example:
+            - meetup
+            - movie
+        link:
+          description: The link to the original website of this event.
+          type:
+            - string
+            - 'null'
+          example: https://www.meetup.com/dresden-eating-drinking-talking-laughing-etc-meetup/events/261999037/
+        contexts:
+          description: |-
+            Events may assigned to different contexts to determine where they come from.
+            For example a meetup event has the following contexts: `meetup`, `meetup/groups/{groupId}` and `meetup/events/{eventId}`.
+            <br /><br />So you can search for all events related to a context (e.g. all events of a meetup group).
+          uniqueItems: true
+          type:
+            - array
+            - 'null'
+          items:
+            type: string
+          example:
+            - meetup/groups/29602718
+            - meetup/groups/29002800
+        google_place_id:
+          description: The id of the google place where this event will happen.
+          type: string
+          example: ChIJJ2ItzFUsp0cRvKqs0jA4QyA
+        updated_at:
+          description: The Timestamp when this event has been updated the last time.
+          type: string
+          format: date-time
+        deleted_at:
+          description: 'The Timestamp when this event has been deleted. An (deleted) event will only be returned, if `include.deleted: true` is set.'
+          type:
+            - string
+            - 'null'
+          format: date-time
+    Location:
+      type: object
+      description: A location with latitude and longitude.
+      properties:
+        lat:
+          description: The latitude.
+          type: number
+          format: double
+          example: 50.8284307
+        lon:
+          description: The longitude.
+          type: number
+          format: double
+          example: 12.9203243
+    Place:
+      type: object
+      properties:
+        google_place_id:
+          description: The (google place) id of this place.
+          type: string
+        primary_google_place_id:
+          description: |-
+            Google places can have multiple place ids.
+            If the Google Place ID of the request is not the same as the primary ID, this field specifies the primary Google Place ID.'
+          type: string
+          example: ChIJQXmv10JGp0cROM6S5hB1AG8
+        name:
+          description: The name of this place.
+          type: string
+          example: Weltecho
+        location:
+          $ref: '#/components/schemas/Location'
+        website_url:
+          description: The website of this place.
+          type:
+            - string
+            - 'null'
+          example: https://www.weltecho.eu/
+        google_maps_url:
+          description: The Google Maps URL for this location.
+          type:
+            - string
+            - 'null'
+          example: https://maps.google.com/?cid=7998521653658308152
+    GeoArea:
+      type: object
+      required:
+        - top
+        - right
+        - bottom
+        - left
+      properties:
+        top:
+          description: The top (latitude) of the geo bounding rectangle.
+          type: number
+          format: double
+          example: 50.838948
+        right:
+          description: The right (longitude) of the geo bounding rectangle.
+          type: number
+          format: double
+          example: 12.933774
+        bottom:
+          description: The bottom (latitude) of the geo bounding rectangle.
+          type: number
+          format: double
+          example: 50.827132
+        left:
+          description: The left (longitude) of the geo bounding rectangle.
+          type: number
+          format: double
+          example: 12.912577
+    DiscoverRequestIncludeType:
+      type: object
+      properties:
+        deleted:
+          description: If set to `true` the response will also include events which have been deleted (since the last update timestamp). This option can be used for synchronization to get information about deleted events.
+          type: boolean
+        places:
+          description: If set to `true` the response will also include the field places which holds all places of the fetched events by their id. So you can use one request to fetch events with the places where they take part.
+          type: boolean
+    events:
+      type: object
+      description: The search request echoed back in the response.
+      properties:
+        search:
+          description: Free text search query.
+          type: string
+        starts_at_min:
+          description: The minimum starts-at timestamp for events.
+          type: string
+          format: date-time
+        starts_at_max:
+          description: The maximum starts-at timestamp for events.
+          type: string
+          format: date-time
+        categories:
+          description: |-
+            A list of event categories to search for (not all events are categorized yet).
+            If not specified all events of all categories (or without category) will be returned.
+            Currently the following categories are supported: `exhibition`, `meetup`, `movie`.
+          type: array
+          items:
+            type: string
+          example:
+            - meetup
+            - movie
+        google_place_ids:
+          description: A list of ids of google places to restrict search to events from these places only.
+          type: array
+          items:
+            type: string
+          example:
+            - ChIJQ7SzNXtGp0cRZwiPGboZQJo
+        geo_area:
+          description: |-
+            Restricts the event search to a geo area bounding box specified by
+            top (latitude), left (longitude), bottom (latitude) and right (longitude).
+          $ref: '#/components/schemas/GeoArea'
+        geo_raster_points:
+          description: |-
+            Restricts the event search to geo areas specified by "raster points".
+            A raster point is a latitude/longitude combination rounded to 1 decimal point.
+          type: array
+          items:
+            type: array
+            items:
+              type: number
+              format: double
+          example:
+            - - 50.8
+              - 12.9
+            - - 50.9
+              - 12.9
+        contexts:
+          description: |-
+            Events may be assigned to different contexts to determine where they come from.
+            For example a meetup event has the following contexts: `meetup`, `meetup/groups/{groupId}` and `meetup/events/{eventId}`.
+          type: array
+          items:
+            type: string
+          example:
+            - meetup/groups/29602718
+            - meetup/groups/29002800
+        updated_since:
+          description: If set, only events added or modified since the given timestamp will be returned.
+          type: string
+          format: date-time
+        include:
+          description: Adds additional content to the response (e.g. places, deleted events).
+          $ref: '#/components/schemas/DiscoverRequestIncludeType'
+        limit:
+          description: The limit of entries returned.
+          type: integer
+        cursor:
+          description: Pagination cursor.
+          type: string
+    responses-events:
+      type: object
+      properties:
+        events:
+          description: The found events, ordered by `event.starts_at` or `event.updated_at` timestamp.
+          type: array
+          items:
+            $ref: '#/components/schemas/Event'
+        places:
+          description: 'If `include.places: true` is set, all related places of returned events will be included (by their google place id).'
+          type: object
+          additionalProperties:
+            $ref: '#/components/schemas/Place'
+        primary_google_place_ids:
+          description: A google place may have multiple place ids, but only one primary. If `google_place_ids` are given by the request, which were not the primary ones, this dictionary holds the related primary google ids (only if they are different). All places will be returned and linked with their primary google place id.
+          type: object
+          additionalProperties:
+            type: string
+        cursor:
+          description: If given this cursor can be used to retrieve the next bunch of events. This cursor must be added as parameter to same request to get the next events.
+          type: string
+          example: WzE1NTk2NjU4MDAsImV2ZW50IzUxODQ0OTU2MTk2NzAwMTYiXQ==
+        request:
+          $ref: '#/components/schemas/events'
+        timestamp:
+          description: The timestamp, when this request has been executed. Can be used to get only event updates on using `updated_since` with this timestamp.
+          type: string
+          format: date-time
+    places:
+      type: object
+      properties:
+        places:
+          description: The found places as a dictionary with their `id` as key.
+          type: object
+          additionalProperties:
+            $ref: '#/components/schemas/Place'
+        timestamp:
+          description: The timestamp, when this request has been executed.
+          type: string
+          format: date-time
+    components_responses-events:
+      type: object
+      properties:
+        member:
+          description: The URIs of the found events sorted by the specified order. Use this URI to retrieve the event data from the `@graph` field.
+          type: array
+          items:
+            type: object
+            properties:
+              '@id':
+                type: string
+                format: uri
+                example: https://sempods.org/aaltra/events/3upatk0gta08onp61vjkpf7p27
+        '@graph':
+          description: |-
+            All resources in a graph-like structure, including all found events (see `member`) and all specified expansions.
+            The key is the URI of the resource, the value is the (semantic) resource itself. All event resources are of type [https://schema.org/Event](https://schema.org/Event).
+            All properties (except `@id` and `@type`) are optionally returned as array, even if only one value can be present
+            (this is a consequence of the data being stored in semantic format, and there may be multiple values for a property).
+          type: object
+          additionalProperties:
+            type: object
+            properties:
+              '@id':
+                type: string
+                format: uri
+              '@type':
+                type: string
+                format: uri
+        next:
+          description: The URI to the next page of events. If there are no more events, this field will not be present.
+          type: string
+          format: uri
+          example: https://api.eventer.app/v1/pods/aaltra/events?limit=2&expand=image,offers&cursor=abc123
