@@ -9,7 +9,7 @@ jobs:
   lint:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
       - name: Lint OpenAPI spec
         run: npx @redocly/cli lint ./openapi/openapi.yaml
 
@@ -20,7 +20,7 @@ jobs:
     permissions:
       contents: write
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
       - name: Bundle OpenAPI spec
         run: npx @redocly/cli bundle ./openapi/openapi.yaml -o ./dist/openapi.yaml
       - name: Check for changes
