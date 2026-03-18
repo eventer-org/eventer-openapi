@@ -1,12 +1,14 @@
 name: CI
 
 on:
-  - pull_request
+  push:
+    branches: [main]
+  pull_request:
 
 jobs:
-  build:
+  lint:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - name: Lint
-        run: npx @redocly/openapi-cli lint ./openapi/openapi.yaml
+      - name: Lint OpenAPI spec
+        run: npx @redocly/cli lint ./openapi/openapi.yaml
