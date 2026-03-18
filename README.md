@@ -8,7 +8,7 @@ Each organizer maintains a pod with their event data; eventer aggregates this in
 unified discovery experience. The platform is currently used by 3 organizers in the Chemnitz area
 (Saxony, Germany).
 
-This repository contains the official [OpenAPI 3.2](https://spec.openapis.org/oas/v3.2.0.html)
+This repository contains the official [OpenAPI 3.1](https://spec.openapis.org/oas/v3.1.0.html)
 specification for the eventer web API. A rendered version is available at
 [apidoc.eventer.app](https://apidoc.eventer.app/).
 
