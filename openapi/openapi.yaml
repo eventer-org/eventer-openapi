@@ -1,5 +1,5 @@
-# see: https://github.com/OAI/OpenAPI-Specification/blob/master/versions/3.1.0.md
-openapi: 3.1.0
+# see: https://spec.openapis.org/oas/v3.2.0.html
+openapi: 3.2.0
 info:
   title: eventer web API
   description: |-
@@ -9,11 +9,19 @@ info:
     <b>Note: Because this project is in beta stage the offered events are restricted to the Chemnitz area in Saxony / Germany.</b>
     <br /><br />
 
+    ## API Lifecycle
+    The **Pods API** (`/pods/{pod}/events`) is the preferred API for accessing event data.
+    It returns semantic data (JSON-LD) directly from organizer pods and supports the full
+    schema.org/Event vocabulary with field expansion.
+    <br /><br />
+    The legacy **Events API** (`/events`) is deprecated and will be removed in a future version.
+    New integrations should use the Pods API instead.
+
     ## Making a request
     All URLs starts with `https://api.eventer.app/v1/`. The path is prefixed with the API version.
     If we change the API in backward-incompatible ways, we'll bump the version marker and maintain stable support for the old URLs.
-    Here's a simple example to search for upcoming "Party" events:
-    [https://api.eventer.app/v1/events?search=Party](https://api.eventer.app/v1/events?search=Party)
+    Here's a simple example to search for upcoming events from a specific pod:
+    [https://api.eventer.app/v1/pods/aaltra/events](https://api.eventer.app/v1/pods/aaltra/events)
 
     ## Date formats
     All timestamps (for requests and responses) are encoded in [ISO 8601](https://en.wikipedia.org/wiki/ISO_8601)
@@ -31,7 +39,7 @@ info:
     ## Help us make it better
     Please tell us how we can make the API better. If you have a specific feature request or if you found a bug,
     please feel free to contact us or contribute directly to our [git repository](https://github.com/eventer-org/eventer-openapi).
-  version: '1.0'
+  version: '1.1'
   license:
     name: MIT
     url: https://opensource.org/licenses/MIT
@@ -40,23 +48,33 @@ servers:
 - url: 'https://api.eventer.app/v1'
   variables: {}
 
+security: []
+
 tags:
-  - name: events
-    description: Retrieve events from all known and trusted sources of the eventer platform.
+  - name: pods
+    description: |-
+      **Preferred API.** Retrieve semantic event data (JSON-LD) from organizer pods.
+      Returns schema.org/Event resources with optional field expansion.
   - name: places
     description: Get details about the venues where the events take place.
-  - name: pods
-    description: Retrieve semantic data (JSON-LD) from specific sources (semantic pods).
+  - name: events
+    description: |-
+      **Deprecated.** Legacy endpoint for searching events across all sources.
+      Use the Pods API (`/pods/{pod}/events`) for new integrations.
 
 paths:
 
   /events:
     get:
+      operationId: searchEvents
       tags:
         - events
       summary: /events
-      description: |- 
-        Use this endpoint to search for events over all known and trusted sources.
+      deprecated: true
+      description: |-
+        **Deprecated — use `/pods/{pod}/events` instead.**
+
+        Search for events over all known and trusted sources.
       parameters:
         - $ref: './events/components.yaml#/parameters/search'
         - $ref: './events/components.yaml#/parameters/starts_at_min'
@@ -73,14 +91,23 @@ paths:
         - $ref: './common/components.yaml#/parameters/cursor'
       responses:
         '200':
-          $ref: './events/components.yaml#/responses/events'
+          description: The found events.
+          content:
+            application/json:
+              schema:
+                $ref: './events/components.yaml#/responses/events'
 
   /events/{id}:
     get:
+      operationId: getEvent
       tags:
         - events
       summary: /events/{id}
-      description: Retrieve an event by id.
+      deprecated: true
+      description: |-
+        **Deprecated — use the Pods API instead.**
+
+        Retrieve an event by id.
       parameters:
         - name: id
           in: path
@@ -100,6 +127,7 @@ paths:
 
   /places:
     get:
+      operationId: searchPlaces
       tags:
         - places
       summary: /places
@@ -116,6 +144,7 @@ paths:
 
   /places/{id}:
     get:
+      operationId: getPlace
       tags:
         - places
       summary: /places/{id}
@@ -139,6 +168,7 @@ paths:
 
   /pods/{pod}/events:
     get:
+      operationId: getPodEvents
       tags:
         - pods
       summary: /pods/{pod}/events
@@ -166,7 +196,7 @@ paths:
             structure to return a list of semantic events ([https://schema.org/Event](https://schema.org/Event)) with optional expansions.
             All properties starting with `@` are reserved for the [JSON-LD context](https://en.wikipedia.org/wiki/JSON-LD).
           content:
-            application/application/ld+json:
+            application/ld+json:
               schema:
                 $ref: './pods/events/components.yaml#/responses/events'
             application/json:

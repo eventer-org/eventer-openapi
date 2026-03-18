@@ -125,62 +125,78 @@ requests:
 
   events:
     type: object
+    description: 'The search request echoed back in the response.'
     properties:
-      - $ref: '#/parameters/search'
-      - $ref: '#/parameters/starts_at_min'
-      - $ref: '#/parameters/starts_at_max'
-      - $ref: '#/parameters/categories'
-      - categories:
-        description: 'A list of event categories to search for (not
-          all events are categorized yet). If not specified all events of all categories
-          (or without category) will be returned.<br/><br/>Currently the following
-          categories are supported: <br/>`exhibition`, `meetup`, `movie`'
+      search:
+        description: 'Free text search query.'
+        type: string
+      starts_at_min:
+        description: 'The minimum starts-at timestamp for events.'
+        type: string
+        format: date-time
+      starts_at_max:
+        description: 'The maximum starts-at timestamp for events.'
+        type: string
+        format: date-time
+      categories:
+        description: |-
+          A list of event categories to search for (not all events are categorized yet).
+          If not specified all events of all categories (or without category) will be returned.
+          Currently the following categories are supported: `exhibition`, `meetup`, `movie`.
         type: array
         items:
           type: string
-        example: [ meetup, movie ]
-      - google_place_ids:
-        description: 'A list of ids of google places to restrict search to events from these places only.
-          <br/>You can use the google maps api to search for google place ids:
-          [google place id finder](https://developers.google.com/maps/documentation/javascript/examples/places-placeid-finder).'
+        example: [meetup, movie]
+      google_place_ids:
+        description: |-
+          A list of ids of google places to restrict search to events from these places only.
         type: array
         items:
           type: string
-          example: ChIJQ7SzNXtGp0cRZwiPGboZQJo
-      - geo_area:
-        description: 'Restricts the event search to a geo area bounding box specified by 4 comma separated coordinates:
-          top (latitude), left (longitude), bottom (latitude) and right (longitude).'
+        example: [ChIJQ7SzNXtGp0cRZwiPGboZQJo]
+      geo_area:
+        description: |-
+          Restricts the event search to a geo area bounding box specified by
+          top (latitude), left (longitude), bottom (latitude) and right (longitude).
         $ref: './schemas.yaml#/GeoArea'
-      - geo_raster_points:
-        description: 'Restricts the event search to a geo areas specified by "raster points".
-          A raster point is a latitude/longitude combination of double values rounded off to 1 decimal point
-          (separated by a semicolon). For example the "raster point" `50.8;12.9` restricts events
-          to locations within a latitude starting with `50.8` and longitude starting with `12.9`.'
+      geo_raster_points:
+        description: |-
+          Restricts the event search to geo areas specified by "raster points".
+          A raster point is a latitude/longitude combination rounded to 1 decimal point.
         type: array
         items:
           type: array
-          format: double
-        example: [ [ 50.8, 12.9 ], [ 50.9, 12.9 ] ]
-      - contexts:
-        description: 'Events may assigned to different contexts to determine where they come from.
+          items:
+            type: number
+            format: double
+        example: [[50.8, 12.9], [50.9, 12.9]]
+      contexts:
+        description: |-
+          Events may be assigned to different contexts to determine where they come from.
           For example a meetup event has the following contexts: `meetup`, `meetup/groups/{groupId}` and `meetup/events/{eventId}`.
-          <br /><br />So you can search for all events related to a context (e.g. all events of a meetup group).'
         type: array
         items:
           type: string
-        example: [ "meetup/groups/29602718", "meetup/groups/29002800" ]
-      - $ref: '#/parameters/updated_since'
-      - include:
-        description: 'Adds some additional content to the response (e.g. `places` to include all related places).'
+        example: ["meetup/groups/29602718", "meetup/groups/29002800"]
+      updated_since:
+        description: 'If set, only events added or modified since the given timestamp will be returned.'
+        type: string
+        format: date-time
+      include:
+        description: 'Adds additional content to the response (e.g. places, deleted events).'
         $ref: '#/requests/DiscoverRequestIncludeType'
-      - $ref: '../common/components.yaml#/parameters/limit'
-      - $ref: '../common/components.yaml#/parameters/cursor'
+      limit:
+        description: 'The limit of entries returned.'
+        type: integer
+      cursor:
+        description: 'Pagination cursor.'
+        type: string
 
   DiscoverRequestIncludeType:
     type: object
     properties:
       deleted:
-        description: 'If set to `true`the response will also include events which have been deleted
+        description: 'If set to `true` the response will also include events which have been deleted
           (since the last update timestamp). This option can be used for synchronization to get information about deleted events.'
         type: boolean
       places:

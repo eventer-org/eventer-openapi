@@ -11,9 +11,8 @@ Event:
       description: |-
         The URI of the event. If given, this URI represents the origin Linked-Open-Data resource.
         You can use this URI to get more information about the event, it represents a semantic endpoint.
-      type: string
+      type: ['string', 'null']
       readOnly: true
-      nullable: true
       example: 'https://sempods.org/aaltra/events/3e1g5ldu9fug02hpmqfm7teo9f'
     title:
       description: The title of the event.
@@ -25,20 +24,17 @@ Event:
       format: date-time
     description:
       description: 'A short, media neutral textual description of the event.'
-      type: string
-      nullable: true
+      type: ['string', 'null']
     categories:
       description: 'The categories to which the event belongs. Note: not all events are categorized, yet.'
       uniqueItems: true
-      type: array
-      nullable: true
+      type: ['array', 'null']
       items:
         type: string
       example: [meetup, movie]
     link:
       description: 'The link to the original website of this event.'
-      type: string
-      nullable: true
+      type: ['string', 'null']
       example: 'https://www.meetup.com/dresden-eating-drinking-talking-laughing-etc-meetup/events/261999037/'
     contexts:
       description: |-
@@ -46,8 +42,7 @@ Event:
         For example a meetup event has the following contexts: `meetup`, `meetup/groups/{groupId}` and `meetup/events/{eventId}`.
         <br /><br />So you can search for all events related to a context (e.g. all events of a meetup group).
       uniqueItems: true
-      type: array
-      nullable: true
+      type: ['array', 'null']
       items:
         type: string
       example: ["meetup/groups/29602718", "meetup/groups/29002800"]
@@ -61,8 +56,7 @@ Event:
       format: date-time
     deleted_at:
       description: 'The Timestamp when this event has been deleted. An (deleted) event will only be returned, if `include.deleted: true` is set.'
-      type: string
-      nullable: true
+      type: ['string', 'null']
       format: date-time
 
 GeoArea:

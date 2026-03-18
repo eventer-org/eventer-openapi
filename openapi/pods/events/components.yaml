@@ -75,11 +75,13 @@ responses:
         description: |-
           The URIs of the found events sorted by the specified order. Use this URI to retrieve the event data from the `@graph` field.
         type: array
-        properties:
-          "@id":
-             type: string
-             format: uri
-             example: "https://sempods.org/aaltra/events/3upatk0gta08onp61vjkpf7p27"
+        items:
+          type: object
+          properties:
+            "@id":
+              type: string
+              format: uri
+              example: "https://sempods.org/aaltra/events/3upatk0gta08onp61vjkpf7p27"
       "@graph":
         description: |-
           All resources in a graph-like structure, including all found events (see `member`) and all specified expansions.
