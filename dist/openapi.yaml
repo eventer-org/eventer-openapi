@@ -89,7 +89,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/responses-events'
+                $ref: '#/components/schemas/events-2'
   /events/{id}:
     get:
       operationId: getEvent
@@ -125,7 +125,7 @@ paths:
       summary: /places
       description: Use this endpoint to search for places.
       parameters:
-        - $ref: '#/components/parameters/parameters-google_place_ids'
+        - $ref: '#/components/parameters/google_place_ids-2'
       responses:
         '200':
           description: The found places.
@@ -188,10 +188,10 @@ paths:
           content:
             application/ld+json:
               schema:
-                $ref: '#/components/schemas/components_responses-events'
+                $ref: '#/components/schemas/events-3'
             application/json:
               schema:
-                $ref: '#/components/schemas/components_responses-events'
+                $ref: '#/components/schemas/events-3'
 components:
   parameters:
     search:
@@ -324,7 +324,7 @@ components:
       schema:
         type: string
       required: false
-    parameters-google_place_ids:
+    google_place_ids-2:
       name: google_place_ids
       in: query
       description: |-
@@ -624,7 +624,7 @@ components:
         cursor:
           description: Pagination cursor.
           type: string
-    responses-events:
+    events-2:
       type: object
       properties:
         events:
@@ -664,7 +664,7 @@ components:
           description: The timestamp, when this request has been executed.
           type: string
           format: date-time
-    components_responses-events:
+    events-3:
       type: object
       properties:
         member:
